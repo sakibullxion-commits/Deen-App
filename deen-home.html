@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deen</title>
+<style>
+:root{--bg:#f6fafc;--card:#ffffff;--ink:#12303f;--mut:#6a8392;--pri:#1d6a8f;--pri2:#e4eff5;--line:#e3ebf0;--gold:#2e8ab3;--gold2:#e4eff5;--hero1:#14597a;--hero2:#2b8bb5;--hl:#bfe3f5;--tile:#f1f4f6}
+@media (prefers-color-scheme:dark){:root{--bg:#08141b;--card:#0f222d;--ink:#e8f3f9;--mut:#8aa6b5;--pri:#4fb2dc;--pri2:#16313f;--line:#1d3b4b;--gold:#7cc4e4;--gold2:#16313f;--hero1:#0c3a50;--hero2:#14597a;--hl:#bfe3f5;--tile:#16313f}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans Bengali","Kalpurush","Siyam Rupali",system-ui,sans-serif;font-size:14px;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.ar{font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Traditional Arabic",serif;direction:rtl;line-height:2.1}
+main{flex:1;overflow-y:auto;padding:10px 14px 20px}
+nav{display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));gap:4px}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:8px 2px;font:inherit;font-size:12px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button i{font-style:normal;font-size:20px}
+nav button.on{color:var(--pri);background:var(--pri2);font-weight:700}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{border:0;border-radius:10px;padding:8px 13px;background:var(--pri2);color:var(--pri);font:inherit;font-size:13px;font-weight:600}
+.btn.p{background:var(--pri);color:#fff}.btn.d{background:transparent;color:#c0392b}
+.mut{color:var(--mut);font-size:12px}
+
+/* HOME */
+.hnext{border-radius:22px;padding:14px;color:#fff;background:linear-gradient(160deg,var(--hero1),var(--hero2));display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hnext small{opacity:.85;font-size:12px;display:block}
+.hnext b{font-size:18px;color:var(--hl)}
+.hnext .hc{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.tile{border:0;background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0}
+.tile .ic{width:100%;max-width:120px;aspect-ratio:1;border-radius:28%;background:var(--tile);display:flex;align-items:center;justify-content:center;font-size:44px}
+.tile:active .ic{transform:scale(.96)}
+@media(min-width:380px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* TIME */
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:16px 14px 18px;color:#fff;text-align:center;background:linear-gradient(160deg,var(--hero1),var(--hero2))}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 0,#ffffff22,transparent 55%);pointer-events:none}
+.hero>*{position:relative}
+.hdate{display:flex;justify-content:space-between;font-size:13px;opacity:.9}
+.curname{margin-top:10px;font-size:14px;opacity:.9}
+.curname b{color:var(--hl);font-size:18px}
+.ringwrap{position:relative;width:min(78vw,300px);margin:8px auto 0}
+.ringwrap svg{width:100%;display:block;transform:rotate(-90deg)}
+.ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ringtxt small{font-size:13px;opacity:.85}
+.ringtxt .cd{font-size:clamp(30px,10vw,44px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px;margin:2px 0}
+.ringtxt .nx{color:var(--hl);font-weight:700;font-size:16px}
+.clock{font-size:clamp(40px,14vw,60px);font-weight:700;line-height:1.1;margin-top:10px;font-variant-numeric:tabular-nums}
+.clock small{font-size:.35em;font-weight:600;margin-left:4px;color:var(--hl)}
+.sehri{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.sehri div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.sehri small{color:var(--mut);display:block}.sehri b{font-size:18px;color:var(--gold)}
+.plist .pr{display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:12px;font-size:15px}
+.plist .pr .dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.plist .pr span.t{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut)}
+.plist .pr.on{background:var(--pri);color:#fff;font-weight:700}
+.plist .pr.on .dot{background:var(--hl)}.plist .pr.on span.t{color:#fff}
+.plist .pr.past{opacity:.55}
+
+/* INPUT/MODAL */
+#modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;z-index:9}
+#modal.on{display:flex}
+#sheet{background:var(--card);width:100%;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));max-height:85%;overflow:auto}
+#sheet h2{margin:0 0 10px;font-size:17px}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px}
+.trow{display:flex;align-items:center;gap:10px}.trow label{width:70px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10}
+#toast.on{opacity:1}
+
+/* corner ornaments */
+main{overflow-x:hidden}
+.corner{position:absolute;top:-10px;width:96px;height:96px;color:var(--pri);pointer-events:none}
+.corner.l{left:-14px}.corner.r{right:-14px;transform:scaleX(-1)}
+#s-tasbih{position:relative}
+.ttop{display:flex;justify-content:space-between;align-items:center;padding:8px 6px 14px;position:relative}
+.ttop button{border:0;background:none;color:var(--pri);padding:4px}
+.ttop svg{width:30px;height:30px;display:block}
+.datepill{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:8px 14px;background:var(--hero1);color:#fff;font-size:13px;font-weight:600}
+.datepill svg,.pill svg{width:16px;height:16px}
+.tapwrap{position:relative;display:flex;justify-content:center;align-items:center;margin:52px 0 46px}
+.orn{position:absolute;top:50%;margin-top:-20px;width:84px;height:40px;color:var(--pri);opacity:.7}
+.orn.a{left:0}.orn.b{right:0;transform:scaleX(-1)}
+.tap svg{width:52%;height:52%}
+.tools2 svg{width:22px;height:22px;display:block;margin:auto;color:var(--pri)}
+.tools2 .sv{display:flex;align-items:center;gap:6px}.tools2 .sv svg{width:18px;height:18px;color:#fff;fill:#fff;margin:0}
+nav{margin:4px 12px calc(10px + env(safe-area-inset-bottom,0px));border-radius:28px;box-shadow:0 8px 22px #1d6a8f22;border:1px solid var(--line);padding:6px}
+nav button{color:var(--pri);font-weight:600}
+nav button svg{width:26px;height:26px;fill:currentColor;display:block}
+nav button.on{background:var(--pri2)}
+.tile .ic svg{width:54%;height:54%;fill:var(--pri)}
+/* TASBIH */
+.tb{display:flex;justify-content:flex-end;gap:4px;margin:0 0 6px}
+.tb button{border:0;background:none;color:var(--ink);font-size:20px;padding:4px 9px}
+.tcard{position:relative;overflow:hidden;border-radius:26px;border:1px solid var(--line);padding:14px 14px 72px;text-align:center;min-height:420px;background:linear-gradient(180deg,var(--card),var(--pri2));box-shadow:0 6px 22px #1d6a8f14}
+.tcard>svg.bg{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none}
+.tcard>*:not(svg.bg){position:relative}
+.pillrow{display:flex;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:99px;padding:9px 16px;font:inherit;font-size:12px;font-weight:600;background:var(--pri2);color:var(--pri)}
+.pill.solid{background:var(--pri);color:#fff}
+.pills{display:flex;justify-content:center;gap:8px;margin-top:6px}
+.cnt{font-size:76px;font-weight:800;line-height:1.1;margin:58px 0 6px;color:var(--hero1)}
+.bar{height:5px;width:96px;background:var(--line);border-radius:9px;overflow:hidden;margin:0 auto}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--gold));width:0;transition:width .15s}
+.zsel{margin-top:14px;border:1px solid var(--line);border-radius:99px;padding:11px 28px;background:var(--pri2);color:var(--hero1);font:inherit;font-size:18px;font-weight:700}
+.tools2{position:absolute!important;left:10px;right:10px;bottom:10px;display:flex;gap:8px;align-items:center}
+.tools2 .sq{border:0;border-radius:14px;width:44px;height:46px;background:var(--card);color:var(--ink);font-size:17px;box-shadow:0 2px 8px #0002}
+.tools2 .sq.off{opacity:.35}
+.tools2 .sv{margin-left:auto;border:0;border-radius:14px;height:46px;padding:0 16px;background:linear-gradient(160deg,var(--hero1),var(--hero2));color:#fff;font:inherit;font-size:15px;font-weight:700}
+.tap{width:min(32vw,124px);aspect-ratio:1;border-radius:50%;border:0;margin:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,var(--hero2),var(--hero1));color:#fff;touch-action:manipulation;user-select:none;box-shadow:0 0 0 9px color-mix(in srgb,var(--pri) 38%,var(--card)),0 0 0 24px color-mix(in srgb,var(--pri) 18%,var(--card)),0 0 0 38px color-mix(in srgb,var(--pri) 9%,var(--card))}
+.tap:active{transform:scale(.96)}
+.hint{text-align:center;color:var(--pri);font-size:14px;margin:4px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat b{display:block;font-size:24px;color:var(--pri)}.stat small{color:var(--mut)}
+.item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.item:last-child{border:0}
+.seg{display:flex;background:var(--pri2);border-radius:10px;padding:3px;margin:8px 0}
+.seg button{flex:1;border:0;background:none;padding:7px;border-radius:8px;font:inherit;font-size:12px;color:var(--pri)}
+.seg button.on{background:var(--pri);color:#fff}
+.dua h3{margin:0 0 4px;font-size:15px;color:var(--pri)}.dua .ar{font-size:22px;margin:6px 0}.dua p{margin:4px 0;color:var(--mut);font-size:13px}
+details.dua summary{cursor:pointer;list-style:none;color:var(--pri);font-size:15px}
+details.dua[open] summary{margin-bottom:6px}
+
+/* NEW HOME */
+#s-home{position:relative;padding-bottom:6px}
+#s-home .corner{top:-10px}
+.htop{display:flex;justify-content:space-between;align-items:center;padding:8px 6px 0;position:relative;z-index:2}
+.htop button{border:0;background:none;color:var(--pri);padding:4px}
+.htop svg{width:32px;height:32px;display:block}
+.harch{display:block;width:92%;margin:-16px auto 0;position:relative;z-index:1}
+.ncard{position:relative;z-index:2;margin:-76px 4px 0;border-radius:30px;padding:34px 18px 26px;text-align:center;background:linear-gradient(180deg,var(--card),var(--pri2));border:1.5px solid color-mix(in srgb,var(--pri) 25%,var(--card));box-shadow:0 10px 28px #1d6a8f22}
+.nbadge{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;box-shadow:0 -2px 0 color-mix(in srgb,var(--pri) 22%,var(--card))}
+.nbadge svg{width:38px;height:38px}
+.norn{display:flex;align-items:center;gap:8px;margin:-6px 6px 12px;color:var(--pri)}
+.norn i,.ft i{flex:1;height:1.5px;background:linear-gradient(90deg,transparent,var(--pri));opacity:.55}
+.norn i:last-child,.ft i:last-child{background:linear-gradient(270deg,transparent,var(--pri))}
+.norn svg,.ft svg{width:14px;height:14px;fill:var(--pri)}
+.norn span{width:60px}.norn span{display:none}
+.ntitle{font-family:system-ui,"Segoe UI",Roboto,sans-serif;font-size:27px;font-weight:500;color:var(--pri);letter-spacing:.3px}
+.npill{margin:14px 14px 0;border-radius:99px;padding:14px 10px;background:color-mix(in srgb,var(--pri) 9%,var(--card));box-shadow:inset 0 2px 8px #1d6a8f14}
+.npill span{font-family:system-ui,"Segoe UI",Roboto,sans-serif;font-size:40px;font-weight:700;color:var(--pri);letter-spacing:3px;font-variant-numeric:tabular-nums;line-height:1.1}
+.nname{margin-top:10px;font-size:13px;color:var(--mut);min-height:18px}
+.hgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.htile{border:1px solid color-mix(in srgb,var(--pri) 18%,var(--card));border-radius:24px;background:linear-gradient(180deg,var(--card),var(--pri2));box-shadow:0 6px 18px #1d6a8f18;padding:16px 4px 12px;color:var(--pri);font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px}
+.htile:active{transform:scale(.97)}
+.htile .hi{width:70px;height:70px}
+.htile b{font-size:20px;font-weight:600;color:var(--pri);margin-top:4px}
+.htile .ft{display:flex;align-items:center;gap:4px;width:80%;margin-top:8px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f9ac4"/><stop offset="1" stop-color="#1d6a8f"/></linearGradient>
+<symbol id="hi-dua" viewBox="0 0 64 64"><g fill="#2e8ab3"><path d="M32 4l1.6 4.4L38 10l-4.4 1.6L32 16l-1.6-4.4L26 10l4.4-1.6z"/><path d="M14 14l1 2.6L17.600 17.600 15 18.600 14 21.200 13 18.600 10.400 17.600 13 16.600z"/><path d="M50 14l1 2.600 2.600 1-2.600 1L50 21.200 49 18.600 46.400 17.600 49 16.600z"/></g><g fill="url(#gB)"><path d="M30 58c-9 0-17-6-18-17L9 29c-.3-3 3-3.500 4-1l3 7-2-16c-.3-3.400 4-4 4.800-.8L23 31l-1-17c0-3 4-3.600 4.600-.4L30 31z"/><path d="M34 58c9 0 17-6 18-17l3-12c.3-3-3-3.500-4-1l-3 7 2-16c.3-3.400-4-4-4.800-.8L41 31l1-17c0-3-4-3.600-4.600-.4L34 31z"/></g></symbol>
+<symbol id="hi-surah" viewBox="0 0 64 64"><path d="M8 54L50 28l3 5L11 58z" fill="#2e8ab3"/><path d="M56 54L14 28l-3 5L53 58z" fill="#1d6a8f"/><path d="M5 18L29 22 31 46 8 44z" fill="#1d6a8f"/><path d="M59 18L35 22 33 46 56 44z" fill="#1d6a8f"/><path d="M9 17Q20 15 31 21V43Q20 38 9 40z" fill="#e8f4fb"/><path d="M55 17Q44 15 33 21V43Q44 38 55 40z" fill="#e8f4fb"/><g stroke="#8fc3de" stroke-width="1.4" stroke-linecap="round"><path d="M13 22Q21 21 28 25M13 27Q21 26 28 30M13 32Q21 31 28 35"/><path d="M51 22Q43 21 36 25M51 27Q43 26 36 30M51 32Q43 31 36 35"/></g></symbol>
+<symbol id="hi-tasbih" viewBox="0 0 64 64"><g fill="url(#gB)" transform="rotate(-18 32 30)"><circle cx="49.0" cy="30.0" r="4.2"/><circle cx="46.7" cy="38.5" r="4.2"/><circle cx="40.5" cy="44.7" r="4.2"/><circle cx="32.0" cy="47.0" r="4.2"/><circle cx="23.5" cy="44.7" r="4.2"/><circle cx="17.3" cy="38.5" r="4.2"/><circle cx="15.0" cy="30.0" r="4.2"/><circle cx="17.3" cy="21.5" r="4.2"/><circle cx="23.5" cy="15.3" r="4.2"/><circle cx="32.0" cy="13.0" r="4.2"/><circle cx="40.5" cy="15.3" r="4.2"/><circle cx="46.7" cy="21.5" r="4.2"/></g><g transform="translate(6 40)"><path d="M6 0l4 3L6 18 0 20z" fill="#9ccfe8"/><path d="M4 18L0 30M7 18L5 31M10 17L10 29" stroke="#7fbcdc" stroke-width="1.6" stroke-linecap="round"/></g></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h5.5v-5.5h3V20H19v-8h3z"/></symbol>
+<symbol id="i-time" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 4c-3 0-5 2.4-5 5.2V11H5.5v9h13v-9H17V9.2C17 6.400 15 4 12 4zM10 20v-3a2 2 0 0 1 4 0v3zM2.500 9l1.200-3 1.200 3v11H2.500zM19.100 9l1.200-3 1.200 3v11h-2.400z"/><path d="M12.200 1.200a2.600 2.600 0 1 0 1.700 3.400 2 2 0 1 1-1.700-3.400z" transform="translate(0 .2)"/></symbol>
+<symbol id="i-tasbih" viewBox="0 0 24 24"><g><circle cx="20" cy="12" r="1.9"/><circle cx="18.470" cy="16.700" r="1.9"/><circle cx="14.470" cy="19.610" r="1.9"/><circle cx="9.530" cy="19.610" r="1.9"/><circle cx="5.530" cy="16.700" r="1.9"/><circle cx="4" cy="12" r="1.9"/><circle cx="5.530" cy="7.300" r="1.9"/><circle cx="9.530" cy="4.390" r="1.9"/><circle cx="14.470" cy="4.390" r="1.9"/><circle cx="18.470" cy="7.300" r="1.9"/></g></symbol>
+<symbol id="i-dua" viewBox="0 0 24 24"><g id="hand"><path d="M11.500 21c-3 0-6.500-2.400-6.800-7.200l-.2-5.600c0-1 1.500-1.100 1.600-.1L6.400 13l.8-8.500c.1-1.200 1.800-1.100 1.800.1l-.1 7.400.9-8.700c.1-1.200 1.800-1 1.800.2L11.500 11l.6-1.300c.5-.9 1.900-.2 1.500.8L11.500 21z"/></g><use href="#hand" transform="translate(24 0) scale(-1 1)"/></symbol>
+<symbol id="i-surah" viewBox="0 0 24 24"><path d="M11 7.200C9.300 5.900 6.700 5.400 3 5.800v11.800c3.700-.4 6.300.1 8 1.400zM13 7.200c1.700-1.300 4.300-1.800 8-1.400v11.800c-3.700-.4-6.300.1-8 1.400z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.500"/><path d="M12 6.500V12l3.500 2"/></g></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="5" width="17" height="15.500" rx="2.500"/><path d="M8 3v4M16 3v4M3.500 10h17"/></g></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><path d="M11 13l9-9M16 4h4v4"/></g></symbol>
+<symbol id="i-lap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-14 5.300M4 12a8 8 0 0 1 14-5.300"/><path d="M18 3v4h-4M6 21v-4h4"/></g></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.400-5.700"/><path d="M20 4v5h-5"/></g></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 4 11l5 5"/><path d="M4 11h10a5 5 0 0 1 0 10h-3"/></g></symbol>
+<symbol id="i-calc" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm.500 2.500v3h9v-3z"/><circle cx="8.500" cy="11.500" r="1.200" fill="var(--card)"/><circle cx="12" cy="11.500" r="1.200" fill="var(--card)"/><circle cx="15.500" cy="11.500" r="1.200" fill="var(--card)"/><circle cx="8.500" cy="15" r="1.200" fill="var(--card)"/><circle cx="12" cy="15" r="1.200" fill="var(--card)"/><circle cx="15.500" cy="15" r="1.200" fill="var(--card)"/><circle cx="8.500" cy="18.500" r="1.200" fill="var(--card)"/><circle cx="12" cy="18.500" r="1.200" fill="var(--card)"/><circle cx="15.500" cy="18.500" r="1.200" fill="var(--card)"/></g></symbol>
+<symbol id="i-vib" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.500" width="8" height="17" rx="2"/><path d="M4.500 8v8M2 10v4M19.500 8v8M22 10v4"/></g></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.500v5h3.500L12.500 19V5L7.500 9.500z"/><path d="M16 9a4 4 0 0 1 0 6M18.500 6.500a8 8 0 0 1 0 11"/></g></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5 3h11.500L20 6.500V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 1-2zM8 3.800v4.200h7V3.800zM7.500 13h9v6.500h-9z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" fill="none" stroke="currentColor" stroke-width="3.200" stroke-linecap="round"/></symbol>
+<symbol id="orn" viewBox="0 0 110 40"><g fill="currentColor" stroke="currentColor"><path d="M0 20H36" stroke-width="1.200" fill="none"/><path d="M44 12l3 5 5 3-5 3-3 5-3-5-5-3 5-3z" stroke="none"/><path d="M62 20Q74 6 94 8Q86 20 94 32Q74 34 62 20Z" stroke="none" opacity=".55"/><path d="M62 20Q80 10 104 20Q80 30 62 20Z" stroke="none" opacity=".35"/></g></symbol>
+</defs></svg>
+<main>
+
+<!-- ===== TIME ===== -->
+<section class="sec on" id="s-home">
+  <div class="htop"><button id="hMenu" aria-label="মেনু"><svg><use href="#i-menu"/></svg></button><button id="hClock" aria-label="সময়" data-go="time"><svg><use href="#i-clock"/></svg></button></div>
+  <svg class="corner l" viewBox="0 0 96 96" aria-hidden="true"><circle cx="0" cy="0" r="78" fill="var(--pri2)"/><circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5"/><circle cx="0" cy="0" r="46" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5"/></svg>
+  <svg class="corner r" viewBox="0 0 96 96" aria-hidden="true"><circle cx="0" cy="0" r="78" fill="var(--pri2)"/><circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5"/><circle cx="0" cy="0" r="46" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5"/></svg>
+  <svg class="harch" viewBox="0 0 360 290" aria-hidden="true">
+    <defs>
+      <linearGradient id="gArch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--pri)" stop-opacity=".10"/><stop offset="1" stop-color="var(--pri)" stop-opacity="0"/></linearGradient>
+      <linearGradient id="gMos" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--pri)" stop-opacity=".38"/><stop offset=".75" stop-color="var(--pri)" stop-opacity=".05"/><stop offset="1" stop-color="var(--pri)" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path d="M12 290V150Q12 112 50 98Q88 88 112 62Q142 40 180 6Q218 40 248 62Q272 88 310 98Q348 112 348 150V290Z" fill="url(#gArch)" stroke="var(--pri)" stroke-opacity=".35" stroke-width="1.6"/>
+    <path d="M26 290V152Q26 120 58 108Q96 98 122 72Q148 52 180 26Q212 52 238 72Q264 98 302 108Q334 120 334 152V290Z" fill="none" stroke="var(--pri)" stroke-opacity=".16" stroke-width="1.2"/>
+    <g fill="url(#gMos)">
+      <rect x="116" y="104" width="8" height="120"/><polygon points="116,104 120,82 124,104"/><rect x="118" y="92" width="4" height="12"/>
+      <rect x="236" y="104" width="8" height="120"/><polygon points="236,104 240,82 244,104"/><rect x="238" y="92" width="4" height="12"/>
+      <rect x="86" y="140" width="6" height="90"/><polygon points="86,140 89,122 92,140"/>
+      <rect x="268" y="140" width="6" height="90"/><polygon points="268,140 271,122 274,140"/>
+      <path d="M138 230V150Q138 98 180 98Q222 98 222 150V230Z"/><rect x="179" y="72" width="2" height="26"/><circle cx="180" cy="72" r="3"/>
+      <path d="M98 230V190Q98 164 118 164Q138 164 138 190V230Z"/><path d="M222 230V190Q222 164 242 164Q262 164 262 190V230Z"/>
+      <path d="M58 230V206Q58 186 76 186Q94 186 94 206V230Z"/><path d="M266 230V206Q266 186 284 186Q302 186 302 206V230Z"/>
+      <path d="M30 240V222Q30 208 42 208Q54 208 54 222V240Z"/><path d="M306 240V222Q306 208 318 208Q330 208 330 222V240Z"/>
+      <rect x="30" y="228" width="300" height="62"/>
+    </g>
+    <path d="M178 42a17 17 0 1 0 16 23a14 14 0 1 1-16-23z" fill="var(--pri)" fill-opacity=".45"/>
+    <path transform="translate(204 40)" d="M0-8L2.2-2.2L8 0L2.2 2.2L0 8L-2.2 2.2L-8 0L-2.2-2.2Z" fill="var(--pri)" fill-opacity=".7"/>
+    <g fill="var(--pri)" fill-opacity=".45"><path transform="translate(92 108)" d="M0-9L2.4-2.4L9 0L2.4 2.4L0 9L-2.4 2.4L-9 0L-2.4-2.4Z"/><path transform="translate(268 108)" d="M0-9L2.4-2.4L9 0L2.4 2.4L0 9L-2.4 2.4L-9 0L-2.4-2.4Z"/></g>
+    <g fill="var(--pri)" fill-opacity=".25"><path transform="translate(70 170)" d="M0-5L1.4-1.4L5 0L1.4 1.4L0 5L-1.4 1.4L-5 0L-1.4-1.4Z"/><path transform="translate(290 170)" d="M0-5L1.4-1.4L5 0L1.4 1.4L0 5L-1.4 1.4L-5 0L-1.4-1.4Z"/></g>
+    <g><g transform="translate(52 0)"><path d="M0 70V108" stroke="var(--pri)" stroke-opacity=".3" stroke-width="1"/><g fill="var(--pri2)" stroke="var(--pri)" stroke-opacity=".55" stroke-width="1.4"><path d="M-5 112h10l-2-4h-6z"/><path d="M-9 118Q-9 108 0 108Q9 108 9 118V140H-9Z"/><rect x="-11" y="140" width="22" height="4" rx="2"/><path d="M-4 144L0 152L4 144"/></g><g fill="var(--pri)" fill-opacity=".35"><path d="M-5 122Q-5 117 0 117Q5 117 5 122V136H-5Z"/></g></g><g transform="translate(308 0)"><path d="M0 70V108" stroke="var(--pri)" stroke-opacity=".3" stroke-width="1"/><g fill="var(--pri2)" stroke="var(--pri)" stroke-opacity=".55" stroke-width="1.4"><path d="M-5 112h10l-2-4h-6z"/><path d="M-9 118Q-9 108 0 108Q9 108 9 118V140H-9Z"/><rect x="-11" y="140" width="22" height="4" rx="2"/><path d="M-4 144L0 152L4 144"/></g><g fill="var(--pri)" fill-opacity=".35"><path d="M-5 122Q-5 117 0 117Q5 117 5 122V136H-5Z"/></g></g></g>
+  </svg>
+  <div class="ncard" id="ncard" data-go="time" role="button">
+    <span class="nbadge"><svg viewBox="0 0 48 48"><g fill="var(--pri)"><path d="M26 6a6 6 0 1 0 4 10a5 5 0 1 1-4-10z" transform="translate(-4 -2) scale(.8)"/><path d="M24 14c-6 0-10 5-10 11v2h20v-2c0-6-4-11-10-11z"/><rect x="21" y="9" width="1.6" height="6"/><rect x="8" y="27" width="32" height="14" rx="1.5"/></g><path d="M24 33a4 4 0 0 1 4 4v4h-8v-4a4 4 0 0 1 4-4z" fill="var(--card)"/></svg></span>
+    <div class="norn"><i></i><svg viewBox="-6 -6 12 12"><path d="M0-6L1.6-1.6L6 0L1.6 1.6L0 6L-1.6 1.6L-6 0L-1.6-1.6Z"/></svg><span></span><svg viewBox="-6 -6 12 12"><path d="M0-6L1.6-1.6L6 0L1.6 1.6L0 6L-1.6 1.6L-6 0L-1.6-1.6Z"/></svg><i></i></div>
+    <div class="ntitle">Namaz Time :</div>
+    <div class="npill"><span id="hTime">-- : --</span></div>
+    <div class="nname" id="hNxName"></div>
+  </div>
+  <div class="hgrid">
+    <button class="htile" data-go="dua"><svg class="hi" viewBox="0 0 64 64"><use href="#hi-dua"/></svg><b>দোয়া</b><span class="ft"><i></i><svg viewBox="-6 -6 12 12"><path d="M0-6L1.600-1.600L6 0L1.600 1.600L0 6L-1.600 1.600L-6 0L-1.600-1.600Z"/></svg><i></i></span></button>
+    <button class="htile" data-go="surah"><svg class="hi" viewBox="0 0 64 64"><use href="#hi-surah"/></svg><b>সুরা</b><span class="ft"><i></i><svg viewBox="-6 -6 12 12"><path d="M0-6L1.600-1.600L6 0L1.600 1.600L0 6L-1.600 1.600L-6 0L-1.600-1.600Z"/></svg><i></i></span></button>
+    <button class="htile" data-go="tasbih"><svg class="hi" viewBox="0 0 64 64"><use href="#hi-tasbih"/></svg><b>তাসবিহ</b><span class="ft"><i></i><svg viewBox="-6 -6 12 12"><path d="M0-6L1.600-1.600L6 0L1.600 1.600L0 6L-1.600 1.600L-6 0L-1.600-1.600Z"/></svg><i></i></span></button>
+  </div>
+</section>
+
+<section class="sec" id="s-time">
+  <div class="hero">
+    <div class="hdate"><span id="dDate"></span><span id="dDay"></span></div>
+    <div class="curname">এখন: <b id="curName"></b></div>
+    <div class="ringwrap">
+      <svg viewBox="0 0 260 260">
+        <circle cx="130" cy="130" r="112" fill="none" stroke="#ffffff30" stroke-width="12"/>
+        <circle id="ring" cx="130" cy="130" r="112" fill="none" stroke="#bfe3f5" stroke-width="12" stroke-linecap="round" stroke-dasharray="703.7" stroke-dashoffset="703.7"/>
+      </svg>
+      <div class="ringtxt"><small>পরবর্তী</small><span class="nx" id="nxName"></span><span class="cd" id="cd">00:00:00</span><small>বাকি</small></div>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+  <div class="sehri">
+    <div><small>সেহরি শেষ</small><b id="sehri"></b></div>
+    <div><small>ইফতার</small><b id="iftar"></b></div>
+  </div>
+  <div class="card plist" id="plist"></div>
+  <div class="row"><span class="mut">সময় আপনার এলাকার সাথে মিলিয়ে নিন</span><button class="btn" id="editTimes">⏱ সময় পরিবর্তন</button></div>
+</section>
+
+<!-- ===== TASBIH ===== -->
+<section class="sec" id="s-tasbih">
+  <div id="tView">
+    <svg class="corner l" viewBox="0 0 96 96" aria-hidden="true"><circle cx="0" cy="0" r="78" fill="var(--pri2)"/><circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5"/><circle cx="0" cy="0" r="46" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5"/></svg>
+    <svg class="corner r" viewBox="0 0 96 96" aria-hidden="true"><circle cx="0" cy="0" r="78" fill="var(--pri2)"/><circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5"/><circle cx="0" cy="0" r="46" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5"/></svg>
+    <div class="ttop"><button id="pickTopic" aria-label="তালিকা"><svg><use href="#i-menu"/></svg></button><button id="goHist" aria-label="ইতিহাস"><svg><use href="#i-clock"/></svg></button></div>
+    <button id="addTopic" hidden aria-hidden="true"></button>
+    <div class="tcard">
+      <svg class="bg" viewBox="0 0 300 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+        <g fill="none" stroke="var(--pri)" stroke-opacity=".16" stroke-width="1.4"><path d="M6 200V84Q6 62 30 50Q62 36 98 32Q134 28 150 8Q166 28 202 32Q238 36 270 50Q294 62 294 84V200"/></g>
+        <g fill="var(--pri)" opacity=".15">
+          <g transform="translate(0,78)">
+            <rect x="14" y="30" width="8" height="90"/><polygon points="14,30 18,8 22,30"/>
+            <rect x="278" y="30" width="8" height="90"/><polygon points="278,30 282,8 286,30"/>
+            <path d="M30 120V92Q56 58 82 92V120Z"/><path d="M218 120V92Q244 58 270 92V120Z"/>
+            <path d="M96 120V78Q150 6 204 78V120Z"/><rect x="149" y="0" width="2" height="22"/>
+            <rect x="88" y="44" width="7" height="76"/><polygon points="88,44 91.5,24 95,44"/>
+            <rect x="205" y="44" width="7" height="76"/><polygon points="205,44 208.5,24 212,44"/>
+          </g>
+          <path d="M150 52a10 10 0 1 0 9 14 8 8 0 1 1-9-14z"/>
+        </g>
+        <g stroke="var(--pri)" stroke-opacity=".28" stroke-width="1"><path d="M34 52V76M266 52V76"/></g>
+        <g fill="var(--pri)" opacity=".28">
+          <rect x="28" y="76" width="12" height="22" rx="3"/><polygon points="28,76 34,68 40,76"/>
+          <rect x="260" y="76" width="12" height="22" rx="3"/><polygon points="260,76 266,68 272,76"/>
+          <path transform="translate(70 100)" d="M0-6L1.600-1.600L6 0L1.600 1.600L0 6L-1.600 1.600L-6 0L-1.600-1.600Z"/>
+          <path transform="translate(230 100)" d="M0-6L1.600-1.600L6 0L1.600 1.600L0 6L-1.600 1.600L-6 0L-1.600-1.600Z"/>
+          <path transform="translate(54 134)" d="M0-5L1.300-1.300L5 0L1.300 1.300L0 5L-1.300 1.300L-5 0L-1.300-1.300Z"/>
+          <path transform="translate(246 134)" d="M0-5L1.300-1.300L5 0L1.300 1.300L0 5L-1.300 1.300L-5 0L-1.300-1.300Z"/>
+        </g>
+      </svg>
+      <div class="pillrow"><span class="datepill"><svg><use href="#i-cal"/></svg><span id="tDate"></span></span></div>
+      <div class="pills"><button class="pill" id="targetPill"><svg><use href="#i-target"/></svg>লক্ষ্য: <b id="ztarget"></b></button><span class="pill"><svg><use href="#i-lap"/></svg>ল্যাপ: <b id="lap">০</b></span></div>
+      <div class="cnt" id="count">০</div>
+      <div class="bar"><i id="prog"></i></div>
+      <button class="zsel" id="zname"></button>
+      <div class="tools2">
+        <button class="sq" id="reset" aria-label="রিসেট"><svg><use href="#i-reset"/></svg></button>
+        <button class="sq" id="undo" aria-label="আনডু"><svg><use href="#i-undo"/></svg></button>
+        <button class="sq" id="calc" aria-label="লক্ষ্য"><svg><use href="#i-calc"/></svg></button>
+        <button class="sq" id="tVib" aria-label="ভাইব্রেশন"><svg><use href="#i-vib"/></svg></button>
+        <button class="sq" id="tSound" aria-label="সাউন্ড"><svg><use href="#i-sound"/></svg></button>
+        <button class="sv" id="save"><svg><use href="#i-save"/></svg>সেভ</button>
+      </div>
+    </div>
+    <div class="tapwrap">
+      <svg class="orn a" aria-hidden="true"><use href="#orn"/></svg>
+      <button class="tap" id="tap" aria-label="গণনা"><svg><use href="#i-plus"/></svg></button>
+      <svg class="orn b" aria-hidden="true"><use href="#orn"/></svg>
+    </div>
+    <div class="hint">গণনা করতে বাটনে ট্যাপ করুন</div>
+    <div class="hint mut">আজকের মোট: <b id="todayN">০</b></div>
+  </div>
+
+  <div id="hView" style="display:none">
+    <div class="row"><button class="btn" id="backT">← তসবিহ</button><b>ইতিহাস</b><span></span></div>
+    <div class="stats">
+      <div class="card stat"><small>আজকের মোট</small><b id="hToday">০</b></div>
+      <div class="card stat"><small>সর্বমোট</small><b id="hAll">০</b></div>
+    </div>
+    <div class="seg"><button data-v="day" class="on">দৈনিক</button><button data-v="topic">বিষয়ভিত্তিক</button><button data-v="sess">সেশন</button></div>
+    <div class="card" id="hList"></div>
+    <div class="row"><button class="btn" id="manual">+ হাতে যোগ করুন</button><button class="btn d" id="clearAll">সব ইতিহাস মুছুন</button></div>
+  </div>
+</section>
+
+<!-- ===== DUA ===== -->
+<section class="sec" id="s-dua">
+  <button class="btn p" id="addDua">+ নিজের দোয়া/জিকির যোগ করুন</button>
+  <div id="duas"></div>
+</section>
+
+<!-- ===== SURAH ===== -->
+<section class="sec" id="s-surah">
+  <button class="btn p" id="addSurah">+ নিজের সূরা যোগ করুন</button>
+  <div id="surahs"></div>
+</section>
+</main>
+
+<nav>
+  <button data-t="home" class="on"><i><svg><use href="#i-home"/></svg></i>হোম</button>
+  <button data-t="time"><i><svg><use href="#i-time"/></svg></i>সময়</button>
+  <button data-t="tasbih"><i><svg><use href="#i-tasbih"/></svg></i>তাসবিহ</button>
+  <button data-t="dua"><i><svg><use href="#i-dua"/></svg></i>দোয়া</button>
+  <button data-t="surah"><i><svg><use href="#i-surah"/></svg></i>সুরা</button>
+</nav>
+<div id="modal"><div id="sheet"></div></div>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="deen_v2";
+const DEF={
+ topics:[{id:"t1",name:"সুবহানাল্লাহ",target:33},{id:"t2",name:"আলহামদুলিল্লাহ",target:33},{id:"t3",name:"আল্লাহু আকবার",target:34},{id:"t4",name:"লা ইলাহা ইল্লাল্লাহ",target:100},{id:"t5",name:"আস্তাগফিরুল্লাহ",target:100}],
+ sel:"t1",counts:{},logs:[],duas:[],
+ times:["04:39","11:41","15:48","17:26","18:41"]
+};
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){S=null}
+if(!S)S=JSON.parse(JSON.stringify(DEF));
+if(!S.times)S.times=DEF.times.slice();
+if(!S.surahs)S.surahs=[];
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const dayKey=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fmtDay=k=>{const [y,m,d]=k.split("-");return bn(d)+"/"+bn(m)+"/"+bn(y)};
+const fmt12=(h,m)=>{const ap=h>=12?"PM":"AM";h=h%12||12;return bn(h)+":"+bn(String(m).padStart(2,"0"))+" "+ap};
+const fmtTime=t=>{const d=new Date(t);return fmt12(d.getHours(),d.getMinutes())};
+let toastT;const toast=m=>{const e=$("#toast");e.textContent=m;e.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("on"),1800)};
+function openSheet(html){$("#sheet").innerHTML=html;$("#modal").classList.add("on")}
+function closeSheet(){$("#modal").classList.remove("on")}
+$("#modal").onclick=e=>{if(e.target.id==="modal")closeSheet()};
+
+/* ===== TIME ===== */
+const PN=["ফজর","যোহর","আসর","মাগরিব","এশা"];
+const at=(hm,off)=>{const [h,m]=hm.split(":").map(Number);const d=new Date();d.setDate(d.getDate()+off);d.setHours(h,m,0,0);return d};
+const pad=n=>String(n).padStart(2,"0");
+function tickTime(){
+  const now=new Date(),C=2*Math.PI*112;
+  // build timeline: yesterday isha, today 5, tomorrow fajr
+  const tl=[{n:4,t:at(S.times[4],-1)},...S.times.map((x,i)=>({n:i,t:at(x,0)})),{n:0,t:at(S.times[0],1)}];
+  let k=0;for(let i=0;i<tl.length-1;i++){if(now>=tl[i].t&&now<tl[i+1].t){k=i;break}}
+  const a=tl[k],b=tl[k+1];
+  const left=Math.max(0,b.t-now),tot=b.t-a.t;
+  const hh=Math.floor(left/3600000),mm=Math.floor(left%3600000/60000),ss=Math.floor(left%60000/1000);
+  $("#cd").textContent=bn(pad(hh)+":"+pad(mm)+":"+pad(ss));
+  $("#ring").style.strokeDashoffset=C*(1-Math.min(1,(now-a.t)/tot));
+  $("#curName").textContent=PN[a.n];
+  $("#nxName").textContent=PN[b.n];
+  let h=now.getHours();const ap=h>=12?"PM":"AM";h=h%12||12;
+  $("#clock").innerHTML=bn(h+":"+pad(now.getMinutes()))+"<small>"+ap+"</small>";
+  $("#dDate").textContent=now.toLocaleDateString("bn-BD",{day:"numeric",month:"long",year:"numeric"});
+  $("#dDay").textContent=now.toLocaleDateString("bn-BD",{weekday:"long"});
+  $("#tDate").textContent="তারিখ: "+now.toLocaleDateString("bn-BD",{day:"numeric",month:"long"});$("#hTime").textContent=pad(b.t.getHours()%12||12)+" : "+pad(b.t.getMinutes());$("#hNxName").textContent="পরবর্তী: "+PN[b.n]+" • "+$("#cd").textContent;
+  const cur=k===0?4:k-1;
+  $$("#plist .pr").forEach((el,i)=>{el.classList.toggle("on",i===cur);el.classList.toggle("past",i<cur&&k>0)});
+}
+function renderPlist(){
+  $("#plist").innerHTML=PN.map((n,i)=>{const [h,m]=S.times[i].split(":").map(Number);return `<div class="pr"><i class="dot"></i><span>${n}</span><span class="t">${fmt12(h,m)}</span></div>`}).join("");
+  const f=S.times[0].split(":").map(Number),m=S.times[3].split(":").map(Number);
+  $("#sehri").textContent=fmt12(f[0],f[1]);$("#iftar").textContent=fmt12(m[0],m[1]);
+}
+$("#editTimes").onclick=()=>{
+  openSheet(`<h2>নামাজের সময় পরিবর্তন</h2>`+PN.map((n,i)=>`<div class="trow"><label>${n}</label><input type="time" data-i="${i}" value="${S.times[i]}"></div>`).join("")+
+  `<div class="row" style="margin-top:12px"><button class="btn" id="rst">ডিফল্ট</button><button class="btn p" id="okTm">সেভ</button></div>`);
+  $("#rst").onclick=()=>{S.times=DEF.times.slice();persist();closeSheet();renderPlist();tickTime()};
+  $("#okTm").onclick=()=>{$$("#sheet [data-i]").forEach(x=>{if(x.value)S.times[+x.dataset.i]=x.value});persist();closeSheet();renderPlist();tickTime()};
+};
+
+/* ===== FX ===== */
+const vib=p=>{if(S.vib===false)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+let AC;
+function beep(f,d,v){
+  if(S.sound===false)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();
+    const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;o.type="sine";o.frequency.value=f;
+    g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(0.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);}catch(e){}
+}
+function tik(){
+  if(S.sound===false)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();
+    const t=AC.currentTime,len=Math.floor(AC.sampleRate*0.03);
+    const buf=AC.createBuffer(1,len,AC.sampleRate),d=buf.getChannelData(0);
+    for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,6);
+    const src=AC.createBufferSource();src.buffer=buf;
+    const f=AC.createBiquadFilter();f.type="bandpass";f.frequency.value=3200;f.Q.value=1.2;
+    const g=AC.createGain();g.gain.value=1.6;src.connect(f);f.connect(g);g.connect(AC.destination);src.start(t);
+    const o=AC.createOscillator(),og=AC.createGain();o.type="square";o.frequency.value=2200;
+    og.gain.setValueAtTime(0.25,t);og.gain.exponentialRampToValueAtTime(0.001,t+0.025);o.connect(og);og.connect(AC.destination);o.start(t);o.stop(t+0.03);}catch(e){}
+}
+const clickFx=()=>{vib(70);tik()};
+const doneFx=()=>{vib([80,50,80,50,160]);beep(660,0.15,0.4);setTimeout(()=>beep(990,0.25,0.4),160)};
+
+/* ===== TASBIH ===== */
+const cur=()=>S.topics.find(t=>t.id===S.sel)||S.topics[0];
+const todayTotal=()=>S.logs.filter(l=>dayKey(l.t)===dayKey(Date.now())).reduce((a,l)=>a+l.n,0);
+function addLog(topic,n){if(n>0)S.logs.push({t:Date.now(),id:topic.id,name:topic.name,n,target:topic.target})}
+function renderCounter(){
+  const t=cur();
+  const run=Object.values(S.counts).reduce((x,y)=>x+y,0);
+  $("#todayN").textContent=bn(todayTotal()+run);
+  if(!t){$("#zname").textContent="তসবিহ বাছাই করুন ⌄";$("#count").textContent="০";$("#ztarget").textContent="—";$("#lap").textContent="০";$("#prog").style.width="0";return}
+  const c=S.counts[t.id]||0;
+  $("#zname").textContent=t.name+" ⌄";
+  $("#ztarget").textContent=t.target?bn(t.target):"∞";
+  $("#count").textContent=bn(c);
+  $("#prog").style.width=t.target?Math.min(100,c/t.target*100)+"%":"0";
+  const done=S.logs.filter(l=>l.id===t.id&&t.target&&l.n>=t.target&&dayKey(l.t)===dayKey(Date.now())).length;
+  $("#lap").textContent=bn(done+(c>0?1:0));
+}
+$("#tap").onclick=()=>{
+  const t=cur();if(!t)return;
+  S.counts[t.id]=(S.counts[t.id]||0)+1;clickFx();
+  if(t.target&&S.counts[t.id]>=t.target){addLog(t,S.counts[t.id]);S.counts[t.id]=0;doneFx();toast("লক্ষ্য পূর্ণ: "+t.name+" ("+bn(t.target)+")")}
+  persist();renderCounter();
+};
+$("#undo").onclick=()=>{const t=cur();if(t&&S.counts[t.id]>0){S.counts[t.id]--;persist();renderCounter()}};
+$("#reset").onclick=()=>{const t=cur();if(t){S.counts[t.id]=0;persist();renderCounter()}};
+$("#save").onclick=()=>{const t=cur(),c=t&&S.counts[t.id]||0;if(c>0){addLog(t,c);S.counts[t.id]=0;persist();renderCounter();toast("সেভ হয়েছে: "+bn(c))}else toast("গণনা ০")};
+$("#addTopic").onclick=()=>{
+  openSheet(`<h2>নতুন তসবিহ</h2><input id="nName" placeholder="তসবিহ/জিকিরের নাম"><input id="nTarget" type="number" inputmode="numeric" placeholder="লক্ষ্য (যেমন ৩৩, ফাঁকা = লক্ষ্য ছাড়া)">
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="closeSheet()">বাতিল</button><button class="btn p" id="okT">যোগ করুন</button></div>`);
+  $("#okT").onclick=()=>{const n=$("#nName").value.trim();if(!n)return toast("নাম লিখুন");const t={id:"t"+Date.now(),name:n,target:parseInt($("#nTarget").value)||0};S.topics.push(t);S.sel=t.id;persist();closeSheet();renderCounter()};
+};
+function pickTopic(){
+  openSheet(`<h2>তসবিহ বাছাই করুন</h2>`+(S.topics.length?S.topics.map(t=>`<div class="item"><button class="btn ${t.id===S.sel?"p":""}" data-s="${t.id}" style="flex:1;text-align:left">${esc(t.name)} • ${t.target?bn(t.target):"∞"}</button><button class="btn d" data-x="${t.id}">✕</button></div>`).join(""):'<div class="mut">কোনো তসবিহ নেই</div>')+`<div class="row" style="margin-top:12px"><button class="btn" onclick="closeSheet()">বন্ধ</button><button class="btn p" id="pNew">+ নতুন</button></div>`);
+  $$("#sheet [data-s]").forEach(b=>b.onclick=()=>{S.sel=b.dataset.s;persist();closeSheet();renderCounter()});
+  $$("#sheet [data-x]").forEach(b=>b.onclick=()=>{const t=S.topics.find(x=>x.id===b.dataset.x);if(t&&confirm("\""+t.name+"\" মুছবেন? (ইতিহাস থাকবে)")){S.topics=S.topics.filter(x=>x.id!==t.id);delete S.counts[t.id];if(S.sel===t.id)S.sel=S.topics[0]?S.topics[0].id:"";persist();renderCounter();pickTopic()}});
+  $("#pNew").onclick=()=>{closeSheet();$("#addTopic").click()};
+}
+$("#zname").onclick=pickTopic;$("#pickTopic").onclick=pickTopic;
+$("#goHist").onclick=()=>{$("#tView").style.display="none";$("#hView").style.display="block";renderHist()};
+$("#backT").onclick=()=>{$("#hView").style.display="none";$("#tView").style.display="block";renderCounter()};
+$("#calc").onclick=()=>$("#targetPill").click();
+$("#targetPill").onclick=()=>{
+  const t=cur();if(!t)return;
+  openSheet(`<h2>লক্ষ্য ঠিক করুন</h2><input id="eT" type="number" inputmode="numeric" value="${t.target||""}" placeholder="ফাঁকা = লক্ষ্য ছাড়া">
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="closeSheet()">বাতিল</button><button class="btn p" id="okE">সেভ</button></div>`);
+  $("#okE").onclick=()=>{t.target=parseInt($("#eT").value)||0;persist();closeSheet();renderCounter()};
+};
+
+/* history */
+let hv="day";
+$$(".seg button").forEach(b=>b.onclick=()=>{hv=b.dataset.v;$$(".seg button").forEach(x=>x.classList.toggle("on",x===b));renderHist()});
+function renderHist(){
+  $("#hToday").textContent=bn(todayTotal());
+  $("#hAll").textContent=bn(S.logs.reduce((a,l)=>a+l.n,0));
+  let h="";
+  if(!S.logs.length)h='<div class="mut">এখনো কোনো ইতিহাস নেই। তসবিহ পূর্ণ বা সেভ করলে এখানে দেখা যাবে।</div>';
+  else if(hv==="day"){const m={};S.logs.forEach(l=>{const k=dayKey(l.t);m[k]=(m[k]||0)+l.n});
+    h=Object.keys(m).sort().reverse().map(k=>`<div class="item"><span>${fmtDay(k)}</span><b>${bn(m[k])}</b></div>`).join("")}
+  else if(hv==="topic"){const m={};S.logs.forEach(l=>{m[l.name]=(m[l.name]||0)+l.n});
+    h=Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="item"><span>${esc(k)}</span><b>${bn(v)}</b></div>`).join("")}
+  else h=S.logs.map((l,i)=>[l,i]).reverse().map(([l,i])=>`<div class="item"><span>${esc(l.name)}<br><span class="mut">${fmtDay(dayKey(l.t))} • ${fmtTime(l.t)}</span></span><span><b>${bn(l.n)}</b> <button class="btn d" data-i="${i}">✕</button></span></div>`).join("");
+  $("#hList").innerHTML=h;
+  $$("#hList [data-i]").forEach(b=>b.onclick=()=>{S.logs.splice(+b.dataset.i,1);persist();renderHist()});
+}
+$("#manual").onclick=()=>{
+  openSheet(`<h2>হাতে যোগ করুন</h2><input id="mName" placeholder="তসবিহের নাম" value="${esc(cur()?cur().name:"")}"><input id="mN" type="number" inputmode="numeric" placeholder="সংখ্যা">
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="closeSheet()">বাতিল</button><button class="btn p" id="okM">যোগ করুন</button></div>`);
+  $("#okM").onclick=()=>{const n=parseInt($("#mN").value),nm=$("#mName").value.trim();if(!n||!nm)return toast("নাম ও সংখ্যা দিন");const f=S.topics.find(t=>t.name===nm);S.logs.push({t:Date.now(),id:f?f.id:"x",name:nm,n,target:f?f.target:0});persist();closeSheet();renderHist()};
+};
+$("#clearAll").onclick=()=>{if(confirm("সব ইতিহাস মুছে ফেলবেন? এটি ফেরত আনা যাবে না।")){S.logs=[];persist();renderHist()}};
+
+/* ===== DUA ===== */
+const DUAS=[
+ {t:"কালেমা তাইয়্যেবা",ar:"لَا إِلَٰهَ إِلَّا اللَّهُ مُحَمَّدٌ رَسُولُ اللَّهِ",bn:"আল্লাহ ছাড়া কোনো উপাস্য নেই, মুহাম্মাদ (ﷺ) আল্লাহর রাসূল।"},
+ {t:"খাওয়ার আগে",ar:"بِسْمِ اللهِ",bn:"আল্লাহর নামে (শুরু করছি)।"},
+ {t:"খাওয়ার পরে",ar:"الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",bn:"সব প্রশংসা আল্লাহর, যিনি আমাদের খাইয়েছেন, পান করিয়েছেন এবং মুসলিম বানিয়েছেন।"},
+ {t:"ঘুমানোর আগে",ar:"بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",bn:"হে আল্লাহ, আপনার নামেই আমি মৃত্যুবরণ করি (ঘুমাই) ও জীবিত হই (জাগি)।"},
+ {t:"ঘুম থেকে উঠে",ar:"الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",bn:"সব প্রশংসা আল্লাহর, যিনি মৃত্যুর পর আমাদের জীবিত করলেন; তাঁর কাছেই পুনরুত্থান।"},
+ {t:"দুনিয়া ও আখিরাতের কল্যাণ",ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",bn:"হে আমাদের রব, দুনিয়ায় কল্যাণ দিন, আখিরাতে কল্যাণ দিন এবং আগুনের আযাব থেকে রক্ষা করুন।"}
+];
+function renderDuas(){
+  const all=[...DUAS,...S.duas];
+  $("#duas").innerHTML=all.map(d=>`<div class="card dua"><h3>${esc(d.t)}</h3>${d.ar?`<div class="ar">${esc(d.ar)}</div>`:""}${d.bn?`<p>${esc(d.bn).replace(/\n/g,"<br>")}</p>`:""}${d.id?`<button class="btn d" data-d="${d.id}">মুছুন</button>`:""}</div>`).join("");
+  $$("#duas [data-d]").forEach(b=>b.onclick=()=>{if(confirm("এই দোয়াটি মুছবেন?")){S.duas=S.duas.filter(x=>x.id!==b.dataset.d);persist();renderDuas()}});
+}
+$("#addDua").onclick=()=>{
+  openSheet(`<h2>নিজের দোয়া/জিকির</h2><input id="dT" placeholder="শিরোনাম"><textarea id="dA" class="ar" rows="3" placeholder="আরবি (ঐচ্ছিক)"></textarea><textarea id="dB" rows="3" placeholder="উচ্চারণ/অর্থ (ঐচ্ছিক)"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="closeSheet()">বাতিল</button><button class="btn p" id="okD">সেভ</button></div>`);
+  $("#okD").onclick=()=>{const t=$("#dT").value.trim();if(!t)return toast("শিরোনাম লিখুন");S.duas.push({id:"d"+Date.now(),t,ar:$("#dA").value.trim(),bn:$("#dB").value.trim()});persist();closeSheet();renderDuas()};
+};
+
+/* ===== SURAH ===== */
+const SURAH=[
+ {n:"আল-ফাতিহা",ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ۝ الرَّحْمَٰنِ الرَّحِيمِ ۝ مَالِكِ يَوْمِ الدِّينِ ۝ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ۝ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ۝ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"},
+ {n:"আয়াতুল কুরসি",ar:"اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ"},
+ {n:"আল-ইখলাস",ar:"قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ"},
+ {n:"আল-ফালাক",ar:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ"},
+ {n:"আন-নাস",ar:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ"},
+ {n:"আল-কাউসার",ar:"إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ ۝ فَصَلِّ لِرَبِّكَ وَانْحَرْ ۝ إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ"}
+];
+function renderSurahs(){
+  const all=[...SURAH,...S.surahs];
+  $("#surahs").innerHTML=all.map((s,i)=>`<details class="card dua"><summary><b>${bn(i+1)}. ${esc(s.n)}</b></summary>${s.ar?`<div class="ar" style="font-size:25px">${esc(s.ar)}</div>`:""}${s.bn?`<p>${esc(s.bn).replace(/\n/g,"<br>")}</p>`:""}${s.id?`<button class="btn d" data-sd="${s.id}">মুছুন</button>`:""}</details>`).join("");
+  $$("#surahs [data-sd]").forEach(b=>b.onclick=()=>{if(confirm("এই সূরাটি মুছবেন?")){S.surahs=S.surahs.filter(x=>x.id!==b.dataset.sd);persist();renderSurahs()}});
+}
+$("#addSurah").onclick=()=>{
+  openSheet(`<h2>নিজের সূরা যোগ করুন</h2><input id="sN" placeholder="সূরার নাম"><textarea id="sA" class="ar" rows="5" placeholder="আরবি"></textarea><textarea id="sB" rows="3" placeholder="উচ্চারণ/অর্থ (ঐচ্ছিক)"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="closeSheet()">বাতিল</button><button class="btn p" id="okS">সেভ</button></div>`);
+  $("#okS").onclick=()=>{const n=$("#sN").value.trim();if(!n)return toast("সূরার নাম লিখুন");S.surahs.push({id:"s"+Date.now(),n,ar:$("#sA").value.trim(),bn:$("#sB").value.trim()});persist();closeSheet();renderSurahs()};
+};
+
+/* ===== NAV / FX ===== */
+$$("nav button").forEach(b=>b.onclick=()=>{
+  $$("nav button").forEach(x=>x.classList.toggle("on",x===b));
+  $$(".sec").forEach(s=>s.classList.toggle("on",s.id==="s-"+b.dataset.t));
+  $("main").scrollTop=0;
+});
+function renderFx(){$("#tSound").classList.toggle("off",S.sound===false);$("#tVib").classList.toggle("off",S.vib===false)}
+$("#tSound").onclick=()=>{S.sound=S.sound===false;persist();renderFx();if(S.sound)tik()};
+$("#tVib").onclick=()=>{S.vib=S.vib===false;persist();renderFx();if(S.vib)vib(40)};
+$$("[data-go]").forEach(b=>b.onclick=()=>$(`nav button[data-t="${b.dataset.go}"]`).click());
+renderSurahs();renderFx();renderCounter();renderDuas();renderPlist();tickTime();setInterval(tickTime,1000);
+</script>
+</body>
+</html>
